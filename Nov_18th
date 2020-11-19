@@ -1,0 +1,161 @@
+Let sum
+Iterate through each string
+Check length < 12 , >10
+First 3 elements are letters and distinct
+Set, check if set has the same letter, next
+
+Next 4 elements are numbers, convert 4 elements into integer and check >1900, <2019
+Starting from 8th element to the one before the last element, check if it’s include in the currency hash
+Last element if it’s capital letter
+Convert the elements from 8th to last element to number and add to the sum
+
+
+
+
+
+
+function countCounterfeit(arr){
+	Let sum = 0;
+	Let capAlphabet = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z];
+	Let currency = [10, 20, 50, 100, 200, 500, 1000];
+	for(let i = 0; i < arr.length; i++){
+		
+		if(arr[i].length < 10 || arr.length > 12) continue;
+		if(!capAlphabet.includes(arr[i][arr.length - 1]) continue;
+Let isLetter = true;
+		let letters = new Map(); x
+		for(let j = 0; j < 3; j++){
+			letters[arr[i][j]] += 1;
+			if(!capAlphabet.includes(arr[i][j]){x
+				isLetter = false;
+}
+}
+if(Object.values(letters).every(e => e !=1)) continue;
+if(!isLetter) continue;
+
+Let isNumber = true;
+Number(value) parseInt(value)
+for(let j = 3; j < 7; j++){
+	if (!Number.isInteger(arr[i][j])){
+		isNumber = false;
+}
+} 
+Let year = Number(arr[i].slice(3, 7));
+if(!isNumber) continue;
+	if(year < 1900 || year > 2019) continue;
+
+
+}
+}
+CurrencyArray = arr[i].split(‘’)
+firstSeg = arr.slice(0,3) ‘A’ ‘B’ ‘C’
+secondSeg = arr.slice(3,7) ‘2019’
+lastSeg = arr.pop()
+thirdSeg = arr.slice(7,arr.length-1) ‘100’
+
+
+
+
+
+
+Function currency(array){
+	Let sum =0 ;
+arr.forEach(cur =>{
+	sum+= mainhelper(curr)
+})
+Return sum
+}
+
+
+Function mainHelper(curr){
+	CurrencyArray = curr[i].split(‘’)
+firstSeg = curr.slice(0,3) ‘A’ ‘B’ ‘C’
+secondSeg = curr.slice(3,7) ‘2019’
+lastSeg = curr.pop()
+thirdSeg = curr.slice(7,arr.length-1) ‘100’
+if(!helper1(firstSeg)) return 0
+if(!helper2(secondSeg)) return 0
+if(!helper3(thirdSeg)) return 0
+if(!helper4(lastSeg)) return 0
+Return parseInt(thirdSeg)
+}
+
+
+
+
+const longestPalindrome = function(s) {
+    if (s.length < 2) return s;
+
+    const lookup = [];
+    for(let i = 0; i < s.length; i++){
+        lookup[i] = new Array(s.length)
+    };
+    
+    let maxlength = 1;
+    const ans = [0, 0]
+    // let longestPalStr = '';
+    // basecase1
+    for (let i = 0; i < s.length; i++) {
+        lookup[i][i] = true;
+        //longestPalStr = s[i];
+    };
+
+    // basecase2
+    for (let i = 0; i < s.length - 1; i++) {
+        if (s[i] === s[i+1]){
+            lookup[i][i+1] = true;
+            if(maxLength < 2){
+                maxLength = 2;
+                ans[0] = i;
+                ans[1] = i + 1;
+            };
+        };
+        // if (lookup[i][i+1]) longestPalStr = s.substring(i, i+2);
+    }; 
+
+    // str that have 3 or more character
+    for(let i = 0; i < str.length; i++){
+        for(let j = 2; j < str.length; j++){ 
+            if(lookup[i+1][j-1] === true && str[i] === str[j]){
+                lookup[i][j] = true;
+                if(j - i + 1 > maxlength){
+                    maxLength = j - i + 1;
+                    ans[0] = i;
+                    ans[1] = j;
+                }
+            }else{
+                lookup[i][j] = false;
+            };
+        };
+    };
+    return str.slice(ans[0], ans[1]+1);
+}; 
+
+
+function(dict, str){
+    const dp = new Array(str.length()).fill(false);
+    const dp2 = [];
+
+
+    for(let i = 0; i < str.length; i++){
+        if(dict.has(str.subString(0, i + 1))){
+            dp2.push(i);
+            dp[i] = true;
+        }else{
+            for(let j = 0; j < dp2.length; j++){
+                const preValidIdx = dp2[j];
+                if(dict.has(str.subString(preValidIdx + 1, i + 1))){
+                    dp2.push(i);
+                }
+            }
+            // for(let j = 0; j < i - 1; i++){
+            //    if(dp[j] && dict.has(str.subString(j + 1, i + 1))){
+            //        dp[i] = true;
+            //        break;
+            //    }
+            //}
+        }
+    }
+
+    return dp[dp.length - 1];
+}
