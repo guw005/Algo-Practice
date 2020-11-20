@@ -1,0 +1,79 @@
+Write a program to check whether a given number is an ugly number.
+
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
+
+Input: 6
+Output: true
+Explanation: 6 = 2 × 3
+
+Input: 14
+Output: false 
+Explanation: 14 is not ugly since it includes another prime factor 7.
+
+
+var isUgly = function(num) {
+    if(num < 1) return false;
+    while(num % 2 === 0) num /= 2;
+    while(num % 3 === 0) num /= 3;
+    while(num % 5 === 0) num /= 5;
+    
+    return num === 1;
+  // const v = [5, 3, 2];
+  // for (let i = 0; i < v.length && num > 1; i++) {
+  //   while (num % v[i] === 0) num /= v[i];
+  // }
+  // return num === 1;
+};
+
+
+
+Write a program to find the n-th ugly number.
+
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. 
+
+Input: n = 10
+Output: 12
+Explanation: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 is the sequence of the first 10 ugly numbers.
+
+
+var nthUglyNumber = function(n) {
+    let p2 = 0;
+    let p3 = 0;
+    let p5 = 0;
+    let arr =[1];
+    
+    for(let i = 1; i < n; i++){
+        let nextPrime = Math.min(arr[p2]*2, arr[p3]*3, arr[p5]*5);
+        arr.push(nextPrime);
+        if(nextPrime === arr[p2]*2) p2++;
+        if(nextPrime === arr[p3]*3) p3++;
+        if(nextPrime === arr[p5]*5) p5++;
+        
+    }
+    
+    return arr[n - 1];
+};
+
+Given n non-negative integers a1, a2, ..., an , where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of the line i is at (i, ai) and (i, 0). Find two lines, which, together with the x-axis forms a container, such that the container contains the most water.
+
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+var maxArea = function(height) {
+    let i = 0;
+    let j = height.length - 1;
+    let area = 0;
+    
+    while( i < j ){
+        area = Math.max(area, Math.min(height[i], height[j])*(j - i));
+        
+        if(height[i] < height[j]){
+            i++;
+        }else{
+            j--;
+        }
+    }
+    
+    return area;
+};
