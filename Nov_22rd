@@ -1,0 +1,245 @@
+function getSequenceSum(i, j, k) {
+    let sum = 0;
+    while(i < j){
+        sum += i;
+        i++
+    }
+    
+    while(j >= k){
+        sum += j;
+        j--;
+    }
+    return sum;
+}
+
+# Provide a solution for each challenge outlined below
+# Solutions should be uploaded to a private gist (if this is a problem for some reason just send us the file)
+# Solutions should not use an external dependency/library (gem)
+# Feel free to use any standard ruby libraries (Ex: date, resolv, ...)
+# Feel free to use any external support sites such as (Google, StackOverflow, ...)
+# You will find a number of test cases that will help you test your solution at the bottom of this file
+# Be sure to design and style your final solution as you would for a production environment
+
+# needed for challenge 2
+require "date"
+# suggested for challenge 3
+require "resolv"
+
+
+
+# Challenge 1: Reformat phone numbers
+# Convert a phone number to the format 111-222-3333
+# All additional digits over 10 are assumed to be the extension
+# Basic Example: Formatter.format("phone_number", "1112223333").result == "111-222-3333"
+# Basic Example: Formatter.format("phone_number", "111222333344").result == "111-222-3333x44"
+
+# Challenge 2: Reformat dates
+# Convert slash separated date strings to Date objects in the format YYYY-MM-DD
+# Assume the last digits are the year unless the value has already been formatted
+# Unformattable dates should return their original value
+# Basic Example: Formatter.format("date", "05/30/08").result == Date.new(2008, 05, 30)
+# Basic Example: Formatter.format("date", "not a date").result == "not a date"
+
+
+#challenge 1 assumption: 
+#1. valid phone number format can started with Cell: or W:
+#2. total number of digits can be 7, 10 or more than 10
+#3. each section of phone number can be seperated by space, dash, period or both (111-222.3333)
+#4. area code can be wrap within a perenthesis
+#5. "ext" can be placed in front of the extension digits
+#6.if the number is invalid return the phone number of the input e.g Cell: 222.3333 => 222.3333
+
+
+#challenge 2 assumption: 
+#1. 05/30/1, 05/30/123 are also valid, the date will be 2001-05-30 and 2123-05-30
+
+
+class Formatter
+  # Your code here for challenge 1 and 2
+
+    def self.format(str, numbers)
+
+        if str == "date"
+            if (!numbers.match(/^\d{4}[-|\/]\d{1,2}[-|\/]\d{1,2}/)) && (!numbers.match(/^\d{1,2}[-|\/]\d{1,2}[-|\/]\d{1,4}/)) && (!numbers.match(/^\d{1,2}[-|\/]\d{1,2}/))
+                return Combo.new("not a date")
+            end
+
+            arr = numbers.scan(/[^-|\/]+/)
+            if arr[0].length == 4
+                year = arr[0].to_i
+                month = arr[1].to_i
+                day = arr[2].to_i
+            else
+              if arr.length == 2
+                year = Time.now.year
+              else
+                year = arr[2].to_i
+              end
+                month = arr[0].to_i
+                day = arr[1].to_i
+            end
+
+
+            if year < 1000
+                year += 2000
+            end
+
+            begin
+                return Combo.new(Date.new(year, month, day))
+            rescue 
+                return Combo.new("not a date")
+            end
+        else
+            phone = numbers.match(/^\s*(Cell:|W:)?\s*((\d{7}|\d{10,})|((\d{3}|\(\d{3}\))((\s+)|.|-)\d{3}((\s+)|.|-)\d{4}\s*((ext\s*\d+)|\d*))|(\d{3}((\s+)|.|-)\d{4}))\s*$/)
+            if phone
+                digits = numbers.scan(/\d/).flatten.join("")
+                if digits.length > 10
+                    arr = digits.match(/(\d{3})(\d{3})(\d{4})(\d*)/)
+                    return Combo.new(arr[1] + "-" + arr[2] + "-" + arr[3] + "x" + arr[4])
+                elsif digits.length == 10
+                    arr = digits.match(/(\d{3})(\d{3})(\d{4})/)
+                    return Combo.new(arr[1] + "-" + arr[2] + "-" + arr[3])
+                else
+                    arr = digits.match(/(\d{3})(\d{4})/)
+                    return Combo.new(arr[1] + "-" + arr[2])
+                end
+            else
+                return Combo.new(numbers.match(/[^Cell:|W:|\s]+/)[0])
+            end
+        end
+        
+    end
+end
+
+class Combo
+    def initialize(result)
+      @result = result
+    end
+
+    def result
+        return @result
+    end
+end
+
+
+# Challenge 3: Validate email address
+# Remember: Solutions should not use an external library (gem)
+# This challenge will require an internet connection to perform DNS lookups
+# Rules:
+# 1. For this challenge, a valid email address username can only contain letters, numbers, dashes, or periods but must start/end with a letter or number)
+# 2. A valid email address domain must have an DNS MX record
+# - One way this check can be performed is by using the built in ruby Resolv::DNS class
+# Basic Example: EmailAddress.new("username@gmail.com").valid? == true
+# Basic Example: EmailAddress.new("user@name@gmail.com").valid? == false
+
+
+class EmailAddress
+  # Your code here for challenge 3
+
+  def initialize(input)
+    @email = input
+  end
+
+  def valid?
+    if !@email.match(/^[a-zA-Z0-9]([a-zA-Z0-9\-.]*[a-zA-Z0-9])?@/)
+       return false
+    end
+    
+    Resolv::DNS.open do |dns|
+      ress = dns.getresources(@email.match(/@(.*)/)[1], Resolv::DNS::Resource::IN::MX)
+      if ress.empty?
+        return false
+      end
+    end
+    
+    return true
+  end
+
+end
+
+
+
+# Challenge 1: Reformat phone numbers - Tests
+puts
+puts "#############################"
+puts "# format phone_number tests #"
+puts "#############################"
+{
+  "1112223333"               => "111-222-3333",
+  "111222333344444"          => "111-222-3333x44444",
+  "2223333"                  => "222-3333",
+  "223333"                   => "223333", # unformattable
+  "Cell: 223333"             => "223333", # unformattable
+  "Cell: 111.222.3333"       => "111-222-3333",
+  "W: (111) 222 3333 ext 44" => "111-222-3333x44",
+}.each do |unformatted_phone_number, expected_result|
+  formatted_phone_number = Formatter.format("phone_number", unformatted_phone_number).result
+  if formatted_phone_number == expected_result
+    puts "PASS - #{unformatted_phone_number.inspect} became #{expected_result.inspect}"
+  else
+    puts "FAIL - #{unformatted_phone_number.inspect} should be #{expected_result.inspect} but was #{formatted_phone_number.inspect}"
+  end
+end
+
+
+# Challenge 2: Reformat dates - Tests
+puts
+puts "#####################"
+puts "# format date tests #"
+puts "#####################"
+{
+  "05/30/08"   => Date.new(2008, 5, 30),
+  "5/30/09"    => Date.new(2009, 5, 30),
+  "05/30/10"   => Date.new(2010, 5, 30),
+  "5/30/11"    => Date.new(2011, 5, 30),
+  "05/30/2012" => Date.new(2012, 5, 30),
+  "5/30/2013"  => Date.new(2013, 5, 30),
+  "2014-05-30" => Date.new(2014, 5, 30),
+  "2015-5-30"  => Date.new(2015, 5, 30),
+  Date.today.strftime("%-m-%-d") => Date.today, # default to current year
+  Date.today.strftime("%-m/%-d") => Date.today, # default to current year
+  "not a date" => "not a date",
+}.each do |unformatted_date, expected_result|
+  convert_date_to_s_proc = -> (value) { value.is_a?(Date) ? value.to_s : value }
+  expected_result = convert_date_to_s_proc.call(expected_result)
+  unformatted_date = convert_date_to_s_proc.call(unformatted_date)
+  formatted_date = Formatter.format("date", unformatted_date).result
+  formatted_date = convert_date_to_s_proc.call(formatted_date)
+  if formatted_date == expected_result
+    puts "PASS - #{unformatted_date.inspect} became #{expected_result.inspect}"
+  else
+    puts "FAIL - #{unformatted_date.inspect} should be #{expected_result.inspect} but was #{formatted_date.inspect}"
+  end
+end
+
+
+# Challenge 3: Validate email address - Tests
+puts
+puts "################################"
+puts "# validate email address tests #"
+puts "################################"
+{
+  # valid usernames
+  "username@gmail.com"        => true,
+  "u.s.e.r.n.a.m.e@gmail.com" => true,
+  "us-er.na-me@gmail.com"     => true,
+  # invalid usernames
+  "username-@gmail.com" => false,
+  "username.@gmail.com" => false,
+  "-username@gmail.com" => false,
+  ".username@gmail.com" => false,
+  "user!name@gmail.com" => false,
+  # invalid domains
+  "username@gmail.com@gmail.com" => false,
+  "username@domain-without-dns-mx.com" => false,
+}.each do |test_email_address, expected_result|
+  email_address = EmailAddress.new(test_email_address)
+  actual_result = email_address.valid?
+  if actual_result == expected_result
+    puts "PASS - #{test_email_address.inspect} should be a #{expected_result ? "valid" : "invalid"} email"
+  elsif actual_result == !expected_result
+    puts "FAIL - #{test_email_address.inspect} should be a #{expected_result ? "valid" : "invalid"} email"
+  else
+    puts "FAIL - #{test_email_address.inspect} should be a #{expected_result ? "valid" : "invalid"} email but did not get a boolean result (#{actual_result.inspect})"
+  end
+end
