@@ -30,3 +30,129 @@ ar mergeTwoLists = function(l1, l2) {
 
     return head.next
 };
+
+
+class Formatter
+  class AbstractFormatter
+    attr_accessor(:original_value, :formatted_value)
+
+    def initialize(original_value)
+      self.original_value = original_value
+    end
+
+    def formatted?
+      instance_variable_defined?(:@formatted_value)
+    end
+
+    def result
+      # prevent multiple format attempts
+      self.formatted_value = format! if !formatted?
+      formatted_value
+    end
+  end
+
+  class PhoneNumberFormatter < AbstractFormatter
+    def format!
+      # remove all non-digits
+      phone_number = original_value.to_s.gsub(/\D/, "")
+      # 111222333344444 => 111-222-3333x44444
+      if phone_number.length >= 11
+        phone_number.insert(10, "x").insert(6, "-").insert(3, "-")
+      # 1112223333 => 111-222-3333
+      elsif phone_number.length == 10
+        phone_number.insert(6, "-").insert(3, "-")
+      # 2223333 => 222-3333
+      elsif phone_number.length == 7
+        phone_number.insert(3, "-")
+      else
+        phone_number
+      end
+    end
+  end
+
+  class DateFormatter < AbstractFormatter
+    # using strptime will also catch invalid dates such as 2020-99-99
+    def attempt_strptime(*params)
+      Date.strptime(*params)
+    rescue ArgumentError
+      original_value
+    end
+
+    def format!
+      date = original_value.to_s
+      # m/d/y
+      if date =~ /\A\d{1,2}\/\d{1,2}\/\d{2}\z/
+        attempt_strptime(date, "%m/%d/%y")
+      # m/d/Y
+      elsif date =~ /\A\d{1,2}\/\d{1,2}\/\d{4}\z/
+        attempt_strptime(date, "%m/%d/%Y")
+      # date.to_s Y-m-d
+      elsif date =~ /\A\d{4}-\d{1,2}-\d{1,2}\z/
+        attempt_strptime(date, "%Y-%m-%d")
+      # m/d
+      elsif date =~ /\A\d{1,2}\/\d{1,2}\z/
+        attempt_strptime("#{date}/#{Date.today.year}", "%m/%d/%Y")
+      # m-d
+      elsif date =~ /\A\d{1,2}-\d{1,2}\z/
+        attempt_strptime("#{date}-#{Date.today.year}", "%m-%d-%Y")
+      # unformattable
+      else
+        original_value
+      end
+    end
+  end
+
+  class << self
+    def format(format_type, original_value)
+      case format_type
+      when "phone_number"
+        PhoneNumberFormatter.new(original_value)
+      when "date"
+        DateFormatter.new(original_value)
+      else 
+        raise(ArgumentError, "Undefined format type: #{format_type}")
+      end
+    end
+  end
+end
+
+
+
+# Challenge 3: Validate email address
+# Remember: Solutions should not use an external library (gem)
+# This challenge will require an internet connection to perform DNS lookups
+# Rules:
+# 1. For this challenge, a valid email address username can only contain letters, numbers, dashes, or periods but must start/end with a letter or number)
+# 2. A valid email address domain must have an DNS MX record
+# - One way this check can be performed is by using the built in ruby Resolv::DNS class
+# Basic Example: EmailAddress.new("username@gmail.com").valid? == true
+# Basic Example: EmailAddress.new("user@name@gmail.com").valid? == false
+
+class EmailAddress
+  attr_accessor(:email, :username, :domain)
+
+  def initialize(email)
+    self.email = email
+    self.username, self.domain = email.split("@", 2)
+  end
+
+  def valid_username?
+    # starts with alphanumeric
+    username.match?(/\A[A-Za-z0-9]/) &&
+    # ends with alphanumeric
+    username.match?(/[A-Za-z0-9]\z/) &&
+    # permitted characters
+    username.match?(/\A[A-Za-z0-9.-]+\z/)
+  end
+
+  def valid_domain?
+    Resolv::DNS.open do |dns|
+      # ensure domain has a DNS MX record for sending email
+      dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
+    end.any?
+  end
+
+  def valid?
+    valid_username? && valid_domain?
+  end
+end
