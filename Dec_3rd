@@ -1,0 +1,20 @@
+Implement pow(x, n), which calculates x raised to the power n (i.e. xn).
+
+ 
+
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+
+var myPow = function(x, n) {
+    if (n === 0) return 1;
+    if (n === 1) return x;
+    if (x === 0) return 0;
+
+    if (n > 0) {
+        return (n % 2 === 1 ? x : 1) * myPow(x * x, Math.floor(n / 2));
+    } else {
+        return myPow(1 / x, -n);
+    }
+};
