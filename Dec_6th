@@ -1,0 +1,48 @@
+1.
+
+function playlist(songs) {
+    // Write your code here
+    let map = new Map();
+    let res = 0;
+    
+    for(let i = 0; i < songs.length; i++){
+        let mod = songs[i] % 60;
+        let pair = (60 - mod) % 60;
+        
+        res += map[pair] ? map[pair] : 0;
+        map[mod] = map[mod] ? map[mod] + 1 : 1;  
+    }
+    
+    return res;
+
+}
+
+
+2.
+function getMinimumBlows(height) {
+    // Write your code here
+    
+}
+
+3.
+function minimumSwaps(popularity) {
+    // Write your code here
+    let count = 0;
+    let length = popularity.length;
+    
+    
+    for(let i = 0; i < length; i++){
+        
+        if(length - popularity[i] === i) continue;
+        
+        // let a = popularity[i];
+        let b = length - popularity[i];
+        
+        [popularity[i], popularity[b]] = [popularity[b], popularity[i]] ;
+        count ++
+        console.log(popularity);
+        console.log(count);
+    }
+    
+    return count;
+}
