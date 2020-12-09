@@ -1,0 +1,20 @@
+function getUmbrellas(requirement, sizes) {
+    // Write your code here
+    if(sizes.length === 0) return -1;
+    
+    let res = Infinity;
+    
+    for(let i = 0; i < sizes.length; i++){
+        if((requirement % sizes[i] === 0) && requirement / sizes[i] < res){
+            res = requirement / sizes[i];
+        }
+    }
+    
+    if(res === Infinity){
+        return -1;
+    }else{
+        return res;
+    }
+
+}
+
