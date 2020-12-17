@@ -1,0 +1,154 @@
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+Note:
+
+A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+Only the filled cells need to be validated according to the mentioned rules.
+ 
+
+Example 1:
+
+
+Input: board = 
+[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: true
+Example 2:
+
+Input: board = 
+[["8","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: false
+Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+
+var isValidSudoku = function(board) {
+//     let rowSet = new Array(9).fill().map(()=>new Set());
+//     let colSet = new Array(9).fill().map(()=>new Set());
+//     let unitSet = new Array(9).fill().map(()=>new Set());
+    
+//     for(let row = 0; row < board.length; row++){
+//         for(let col = 0; col < board.length; col++){
+//             let cur = board[row][col];
+//             let unitIdx = Math.floor(row/3) * 3+ Math.floor(col/3);
+//             if(cur === '.') continue;
+            
+//             let rowCheck = rowSet[row].has(cur);
+//             let colCheck = colSet[col].has(cur);
+//             let unitCheck = unitSet[unitIdx].has(cur);
+            
+//             if(rowCheck || colCheck || unitCheck) return false;
+            
+//             rowSet[row].add(cur);
+//             colSet[col].add(cur);
+//             unitSet[unitIdx].add(cur);
+            
+//         }
+//     }
+    
+//     return true;
+    let set = new Set();
+    
+    for(let row = 0; row < board.length; row++){
+        for(let col = 0; col < board[0].length; col++){
+            let cur = board[row][col];
+            if(cur === '.') continue
+            let rowCheck = cur + 'row' + row;
+            let colCheck = cur + 'col' + col;
+            let unitCheck =cur + 'unit' + Math.floor(row/3) + '-' + Math.floor(col/3);
+            
+            if(set.has(rowCheck) || set.has(colCheck) || set.has(unitCheck)) return false
+            
+            set.add(rowCheck);
+            set.add(colCheck);
+            set.add(unitCheck);
+            
+            console.log(set);
+        }
+    }
+    
+    return true;
+
+};
+
+You're working on a secret team solving coded transmissions.
+Your team is scrambling to decipher a recent message, worried it's a plot to break into a major European National Cake Vault. The message has been mostly deciphered, but all the words are backward! Your colleagues have handed off the last step to you.
+Write a function reverseWords() that takes a message as an array of characters and reverses the order of the words in place. ↴
+Why an array of characters instead of a string?
+The goal of this question is to practice manipulating strings in place. Since we're modifying the message, we need a mutable ↴ type like an array, instead of JavaScript's immutable strings.
+For example:
+ const message = [ 'c', 'a', 'k', 'e', ' ',
+                'p', 'o', 'u', 'n', 'd', ' ',
+                's', 't', 'e', 'a', 'l' ];
+
+reverseWords(message);
+
+console.log(message.join(''));
+// Prints: 'steal pound cake'
+
+When writing your function, assume the message contains only letters and spaces, and all words are separated by one space.
+ 
+ 
+ 
+ 
+ 
+Iterate through arr to find the count of “ “
+While count > 0
+Shift the element from the array
+If shift === “ “, count --
+Push shift to the array
+[s,t,e,a,l, ,p,o,u,n,d, , c,a,k,e]
+Function message(arr){	
+Let count = 0
+for(let i = 0; i < arr.length; i++){
+ if(arr[i] === “ “) count ++; // count = 2
+}
+arr.push(“ “);[.......”l’, “ “]
+while(count > 0){count = 2 
+	Let char = arr.shift(); “c” “a” “ k” “e” “ ”, p, o,u, n, d
+	if (char === “ “){
+		count --; count 1
+}
+arr.push(char); [“ ”.”s”, “t”, “e”, “a”, “l”, ” “, “c”, “a”, “k”, “e”,” “, “p”,o,u, n, d]
+ 
+}
+ arr.pop();
+Return arr
+}
+ 
+[ c,a,k,e, , p,o,u,n,d, ,s,t,e,a,l ]
+[s t e a l  d n u o p  e k a c ]
+ 
+reverseString(arr){
+	reverse(arr,0, arr.length-1)
+	Let currIndex = 0
+	for (let i =0; i < arr.length;i++){
+	if(arr[i]  === ‘ ’){
+	reverse(arr, currIndex, i-1)
+	currIndex = i+1
+}
+}
+}
+ 
+reverse(arr, i,j){
+while(i < j){
+	[arr[i],arr[j]] = [arr[j],arr[i]]
+} 
+Return arr
+}
