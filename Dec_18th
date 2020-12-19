@@ -1,0 +1,11 @@
+function arraySum(inputs, tests){
+    let set = new Set();
+
+    for(let i = 0; i < inputs.length - 1;i++){
+        for(let j = 0; j < inputs.length; j++){
+            if(set.has(inputs[i] + inputs[j])) return true;
+        }
+    }
+
+    return false;
+}
