@@ -1,0 +1,36 @@
+65.Validate if a given string can be interpreted as a decimal number.
+" 0 " v
+" 0.1 " v
+" abc" inv
+"1e3" v
+"1e3.5" inv
+"1.2e3" v
+"--3" inv
+".3" v
+"0001" inv
+"2.00e93"
+0-multiple space
+case 0 or 0. 
+
+"2.e22"
+"e"
+
+let woDecimal = /^\s*[+|-]?(([1-9]\d*(e[1-9]\d*)?)|0)\s*$/
+
+let wDecimal = /^\s*[+|-]?(([1-9]\d*)|0)\.((\d*e[1-9]\d*)|\d+)\s*$/    both
+
+let val1 = /^\s*[+/-]?(([1-9]\d*)|0)\.\s*$/        
+let val2 = /^\s*[+/-]?\.((\d+e[1-9]\d*)|\d+)\s*$/                   
+
+
+.00000e3
+
+       you.you 
+       you.         
+          .you
+
+          .
+01
+8.e27
+
+return !!(s.match(woDecimal) || s.match(wDecimal));

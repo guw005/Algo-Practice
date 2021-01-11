@@ -1,0 +1,61 @@
+76.
+1. sliding window, increase the size of the sliding window untill it has all the char in t
+2. decrease the size of the window by moving the left side of the window
+3. keep track of the size of the window, record the left side and right side 
+4. substring from left side index to right side index
+s = "A D O B E E E E E C A N C", t = "ABC"
+             l
+                              r
+minSize = 5;
+minl = 0;
+minr = 5;
+count = 1;
+function minWindow(s, t){
+    let map = new Map()
+
+    for(let i = 0; i < t.length; i++){
+        if(!map[t[i]]){
+            map[t[i]] = 0;
+        }
+        map[t[i]] += 1;
+    }
+
+    let l = 0;
+    let r = 0;
+    let minl = 0;
+    let minr = 0;
+    let minSize = Infinity;
+
+
+    while(r < s.length){
+
+        if(map[s[r]] !== undefined){
+            map[s[r]]--
+            count--
+        }
+        r++;
+
+        while(count === 0){
+            if(r - l < minSize){
+                minSize = r - l;
+                minl = l;
+                minr = r;
+            } 
+            
+            if(map[s[l]] !== undefined){
+                map[s[l]]++;
+                count++
+            }
+            l++;
+        }
+    }
+
+    return minSize === Infinity ? "" : s.substring(minl, minr + 1);
+}
+
+165.
+1.0.1 & 1
+1. split the version into pieces seperated by "."
+2. convert each pieces into number and then compare to get result
+
+version1 = "1.01", version2 = "1.001"

@@ -1,0 +1,106 @@
+151.
+"  hello world  "
+"world hello"
+"a good   example"
+"example good a"
+1. iterate thru the string identify each word and push the word into the result array
+2. reverse array
+
+function reverseWords(s){
+    let result = [];
+    let temp = "";
+
+    for(let i = 0; i < s.length; i++){
+        if(s[i] === " "){
+            if(temp.length !== 0){
+                result.push(temp);
+                temp = "";
+            }
+        }else{
+            temp += s[i];
+        }
+    }
+
+    return result.reverse().join(" ");
+
+    s.match(/[^\s]+/g).reverse().join(" ");
+}
+
+68.
+words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16
+Output:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+this is an
+
+1. find the last word to fit maxlength
+2. check whether it's the last line
+3. distribute space between words
+4. push the string into the array
+
+function fullJustify(words, maxWidth){
+    let res = [];
+    let left = 0;
+    while(left < words.length){
+        let right = findRightWord(left, words, maxWidth);
+        res.push(justify(left, right, words, maxWidth));
+    }
+    return res;
+}
+
+function findRightWord(left, words, maxWidth){
+    let sum = words[left].length;
+
+    left++
+
+    while(left < words.length && (sum + 1 + words[left].length) <= maxWidth){
+        sum += 1 + words[left].length;
+        left++
+    }
+
+    return left - 1;
+}
+
+function justify(left, right, words, maxWidth){
+    if(right === left) return followSpace(words[left], maxWidth);
+
+    let numOfSpace = right -left;
+    let totalSpaces = maxWith - wordsLength(left, right, words);
+    let isLastLine = right === words.length - 1 ? true : false;
+
+    let reminder = isLastLine? 0 : totalSpaces % numOfSpace;
+    let space = isLastLine? " " : spaceBuilder(Math.floor(totalSapces / numOfSpace));
+
+    let temp = "";
+    for(let i =left, i <= right; i++){
+        temp += (words[i] + space) + (reminder > 0 ? " " : "");
+        reminder--;
+    }
+
+    return followSpace(temp.trim(), maxWidth);
+}
+
+function followSpace(str, maxWidth){
+    return str + spaceBuilder(maxWidth - word.length);
+}
+
+function spaceBuilder(num){
+    let str = new Array(num + 1).join(" ");
+    return str;
+}
+
+function wordsLength(left, right, words){
+    let length = 0;
+
+    for(let i = left; i <= right; i++){
+        length += words[i];
+    }
+
+    return length;
+}
+5 spaces
+2 
+xxx[  ]xxxx[   ]xxxx[     ]xxxxxx
