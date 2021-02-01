@@ -1,0 +1,161 @@
+BFS
+
+Node{
+    val: integer
+    children: []
+}   
+
+
+given a root and a target, find the shortest path from root to target;
+ 
+   
+        a -  e - g - z
+      /  \  / 
+     c    b - f 
+
+      a
+1   c b e
+2   f g 
+3   z
+
+
+
+public int minStep(Node root, int target, HashSet<Integer> set){
+    LinkedList<Node> queue = new LinkedList<Integer>; 
+    queue.offer(root);
+
+    int level = 0;                  // 2
+    int remaindingElementAtThisLevel = queue.size(); // 
+
+    while(!queue.isEmpty()){     [g]
+        Node cur = queue.poll();   // f 
+        set.add(cur.val);
+        remaindingElementAtThisLevel--;             // 1
+
+        if(cur.val == target){
+            return level;   //2
+        }
+
+        for(int i = 0; i < cur.children.size(); i++){
+           if(!set.contains(cur.val)){
+            queue.offer(cur.children.get(i));
+           }
+        }
+
+        if(remaindingElementAtThisLevel == 0){
+            level++;
+            remaindingElementAtThisLevel = queue.size(); // 2
+        }
+    }
+    return -1;
+}
+
+
+dijkstra’s algorithm
+
+min cost from a to f
+          1    2   1   
+        a -  e - g - z
+      /1 \4 /1 
+     c    b - f 
+            1    
+
+[node, cost]
+
+queue  [[z, 4]] // look up heap; log(n)
+     
+        a 
+1    c      e 
+2    b(2)
+3    g f
+4    b(4)
+
+bipartite?
+[a, b, c, e]  g1
+[f, g, h, i]  g2
+[a: f, g, h]
+[b: f, h, i]
+  element in one group cann't connect to element in the same group
+       a -  e - g - z
+      / \     \
+     c    b -  f 
+at even number level    put it in group 2,   group 1
+visited [[a,1], [c,2], [b2], [e2],   e[1]]
+1[cbe]        
+2[afeg]
+
+map{
+    a: 0,
+    b: 1,
+    c: 1,
+    d: 0,
+    e: 0,
+    f: 0,
+    g: 0,
+}
+
+
+         a (w)          
+         / \
+        b   c  (b)      
+     /  |    |    \
+    d   e(w) - f(w)  g 
+
+public int minStep(Node root, int target){
+    LinkedList<Node> queue = new LinkedList<Integer>; 
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    queue.offer(root);
+    int level = 0;                  // 3
+    int remaindingElementAtThisLevel = queue.size(); // 
+    while(!queue.isEmpty()){     [f]
+        Node cur = queue.poll();   // g
+        if(map.containsKey(cur.val) && map.get(cur.val) != level % 2){
+            return false;
+        }
+        map.put(cur.val, level % 2); 
+        remaindingElementAtThisLevel--;             // 1
+        for(int i = 0; i < cur.children.size(); i++){
+            if(!map.containsKey(cur.val){
+                queue.offer(cur.children.get(i));
+            }
+        }
+        if(remaindingElementAtThisLevel == 0){
+            level++;
+            remaindingElementAtThisLevel = queue.size(); // 2
+        }
+    }
+    return -1;
+}
+
+
+
+
+
+//basic bfs structure
+
+bfs{
+    queue = [root];
+    //keep track of level
+    remainingElement = 1;
+    level = 0;
+    part = [];
+    
+    while(!queue.isEmpty()){
+        cur = queue.shift();
+        remainingElement--;
+
+        // something
+        part.push(cur.val);
+
+        for(child : cur.children){
+            queue.push(child);
+        }
+
+        if(remainingElement === 0){
+            ans.push(part);
+            part = [];
+            level++;
+            remainingElement = queue.size();
+        }
+    }
+}

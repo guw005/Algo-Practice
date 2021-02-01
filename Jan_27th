@@ -1,0 +1,121 @@
+all subset
+parenthese
+
+
+
+1 5 10 25
+
+3(25) 1(10) 14(1)
+99(1)
+9(10)9(1)
+wantedAmount = n(99)
+
+            how many levels of tree
+            how many branches for each el
+
+level: one type of coin   
+
+    1:    (0)25      1        2   3
+         /   \      / \
+    2   0 -  9     0 - 7
+
+    3:  5
+    
+    4:  0 - 99    
+
+
+
+    1   5    10  25
+   / \
+  1 5 10 25
+
+  99
+  4
+
+n^4
+
+
+for each level, 4 options  1 5 10 25
+n level 
+4 branches 
+
+4^n
+
+var coinComb = function(n){
+
+let ans = [];
+coins = [1, 5, 10, 25]
+
+var dfs = function(coins,n,comb){
+    if(n === 0) {        
+        ans.push(Array.from(comb));
+    }
+    if(n <= 0) return;
+
+    // second approach
+    for(let i = 0; i < coins.length; i++){
+        comb.push(coins[i]);
+        dfs(coins, n - coins[i], comb);
+        comb.pop()
+    }
+
+    // first approach
+        for(let i = 0; i <= n/coins[idx]; i++){
+        i.repeats(comb.push(coins[idx]))
+        dfs(coins, idx + 1,  n - coins[idx] * i, comb);
+        i.repeats(comb.pop());
+    }
+
+}
+
+dfs(coins, n, []);
+return ans;
+}
+
+
+
+
+
+permutations
+
+[a, b, c]
+abc
+acb
+bca 
+bac 
+cab 
+cba
+
+
+                    a    b    c
+                   / \
+                   b c
+                  /  
+                 c   
+
+var permutation = function(arr){
+    
+let ans = [];
+const tracking = new Set();
+
+const dfs = function(arr, tracking, comb){
+    if(tracking.length === arr.length){
+        ans.push(Array.from(comb));
+        return;
+    }
+
+    for(let i = 0; i < arr.length; i++){
+        if(!tracking.has(arr[i])){
+            tracking.add(arr[i]);
+            comb.push(arr[i]);
+            dfs(arr, tracking, comb);
+            tracking.delete[arr[i]];
+            comb.pop();
+        }
+    }
+
+}
+
+dfs(arr, tracking, []);
+return ans;
+}

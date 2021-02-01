@@ -1,0 +1,147 @@
+f(n) = f(n - 1) + f(n - 2);
+
+
+const dp = new Array(n+1);
+function fib(n){
+    if(n === 0 || n === 1) return n;
+    if(dp[n]){
+        return dp[n];
+    }
+    const a = fib(n - 1);
+    const b = fib(n - 2);
+    dp[n] = a + b;
+    return dp[n];
+}
+
+
+
+Longest Ascending subsequence
+[1,2,3,4,5,6,7,3,2,5,8,11,6]
+[1,2,3,4,5,6,7,3,2,5,8,9, 6]
+
+dp[i] reprents the length of Longest Ascending subsequence and must include i;
+
+
+3,5,8,9  -> 4
+2,5,8,9  -> 4
+
+
+word break;
+given dict: ["abc", "bcd", "efgh"]
+       str: "abcbcd"
+
+dp[i] reprents whether str[0...i] including i can be form by the words from dict;
+
+"abcbcdefgh"
+abcbcd  false
+
+a + bcbcd
+ab + cbcd
+abc + bcd  
+abcb + cd
+abcbc + d
+            
+abc === true ->    bcd 
+                     e  f  g h
+[f, f, t,   f, f, t, f, f  f] 
+ 0     2    3     5
+
+
+dp[]
+abcbcdefgh
+
+a
+
+ab 
+
+abc
+
+
+
+
+[2, 5]
+
+abc    str[3...7] bcdefg 
+abcbcd   efg  
+
+abcbc
+____________  +  ___________
+have result         new
+
+""            +  abcbc
+abc           +     bc
+
+
+function(dict, str){
+    const dp = new Array(str.length()).fill(false);
+    const dp2 = [];
+
+
+    for(let i = 0; i < str.length; i++){
+        if(dict.has(str.subString(0, i + 1))){
+            dp2.push(i);
+            dp[i] = true;
+        }else{
+            for(let j = 0; j < dp2.length; j++){
+                const preValidIdx = dp2[j];
+                if(dict.has(str.subString(preValidIdx + 1, i + 1))){
+                    dp2.push(i);
+                }
+            }
+            // for(let j = 0; j < i - 1; i++){
+            //    if(dp[j] && dict.has(str.subString(j + 1, i + 1))){
+            //        dp[i] = true;
+            //        break;
+            //    }
+            //}
+        }
+    }
+
+    return dp[dp.length - 1];
+}
+
+Given a rope with integer­length n, how to cut the rope into m integer­length parts with length
+p[0], p[1], ...,p[m­1], in order to get the maximal product of p[0]*p[1]* ... *p[m­1]? m is
+determined by you and must be greater than 0 (at least one cut must be made).
+
+dp[i]:  max product of the rope with length n;   
+
+dp[i] = max(itself, dp[1...i-1] * dp[i-1...1])
+
+
+
+dp[5] = max(5, 1*4, 2*3)
+
+2: dp[2]  =  max(product, length of itself)
+
+3: dp[3] = 3;
+
+4: dp[4] = 4;
+
+5: dp[5] = 6
+
+6: 
+
+1   5
+2   4
+3   3
+
+
+1-4  4 
+2-3    2 * 3
+
+5
+--|---
+
+const cutRope(n){
+    const dp = [];
+    dp[1] = 1;
+    for (let i = 2; i <= n ; i++) {
+        for (let j = 1; j <= i; j++) {
+            // cut
+            
+            dp[i] = Math.max( Math.max(dp[j],j) * Math.max(dp[i-j], i - j), i)
+        }
+    }
+    return 
+}

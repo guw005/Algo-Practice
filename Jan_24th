@@ -1,0 +1,116 @@
+1358
+
+var numberOfSubstrings = function(s) {
+    let count = 0;
+    for(let i = 0; i < s.length; i++){
+        const set = new set();
+        for(let j = i; j < s.length; j++){
+            set.add(s[j]);
+            if(set.length === 3){
+                count += s.length - j
+                break;
+            }
+        }
+    }
+    return count;
+};
+
+sliding window
+var numberOfSubstrings = function(s) {
+    let count = 0;
+    const map = {
+        a: 0,
+        b: 0,
+        c: 0
+    }
+    let i = 0;
+    let j = -1;
+    while(j < s.length){
+        if(Object.values(map).all(val => val > 0)){
+            count += s.length - j;
+            map[s[i]]--;x
+            i++;
+        }else{
+            if(j === s.length - 1){
+                break;
+            }
+            j++;
+            map[s[j]]++;
+        }    
+    }
+    return count;
+}; 
+
+491
+
+if nums[idx] > last element in current array we have two options and should traverse both options
+    basecase: idx >= length, if curlen > 1 and not included in set, push into the answer array
+    
+    we choose to include, if cur is greater than last
+    don't include and move on (increment idx)
+    
+return the answer array
+
+    var findSubsequences = function(nums){
+    const set = new Set();
+    const ans = [];
+    function dfs(index, curr) {
+        if (index >= nums.length) {
+            const currToString = curr.toString()
+            if (!set.has(currToString) && curr.length > 1) {
+                ans.push(curr)
+                set.add(currToString);
+            }
+            return;
+        }
+        
+        if (nums[index] >= curr[curr.length-1]) {
+            curr.push(nums[index])
+            dfs(index+1, curr);
+            curr.pop();
+        }
+        dfs(index+1, curr)
+    }
+    for (let i = 0; i < nums.length; i++) {
+        dfs(i, []);
+    }
+    return ans;
+
+    }
+
+    var findAllsubset = function(nums) {
+    const ans = [];
+    function dfs(index, curr) {
+        if (index >= nums.length) {
+            ans.push(curr)
+            return;
+        }
+        // include
+        curr.push(nums[index])
+        dfs(index+1, curr);
+        curr.pop();
+        
+        // not include
+        dfs(index+1, curr);
+    }
+    for (let i = 0; i < nums.length; i++) {
+        dfs(i, []);
+    }
+    return ans;
+
+
+subset(arr, length, idx, str){
+    if(idx >= arr.length || str.length >= length){
+        if(str.length === length){
+            console.log(str);
+        }
+        return;
+    }
+    //choose
+    subset(arr, idx + 1, str+arr[idx]);
+
+    subsetArr.pop();
+    //not
+    subset(arr, idx + 1, str);
+}
+};

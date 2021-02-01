@@ -1,0 +1,199 @@
+3
+
+
+"abcbbcbb"              [a, b, c]
+   l 
+    r
+
+window: substring without repeating characters
+set= [a, b, c]
+
+everytime expand the window update maxlength
+expand the window(move r index, add str[r] into set) 
+    until we encounter a char that already in our window
+        move the l index to the right if str[l] is != str[r]
+
+var lengthOfLongestSubstring = function(s){
+    if( s.length === 0) return 0;
+
+    let left = 0;
+    let right = 0;
+    let set = new Set();
+    let maxLength = 0;
+
+    while(right < s.length){
+        if(set.has(s[right])){
+            while(s[left]!=s[right]){
+                set.delete(s[left]);
+                left++;
+            }
+            left++
+        } else {
+            set.add(s[right]);
+            if(set.size() > maxLength){
+                maxLength = set.size();
+            }
+            right++;
+        }
+    }
+
+    return maxLength;
+}
+
+229.
+
+Given integer array of size n, 
+return elements appear more than floor (n/2) times
+
+Input: [3,2,3]   more than 1
+Output: [3]
+
+Input: [1,1,1,1,3,2,2,2]  more than 3
+Output: [1]
+
+const elementsAppear = function (nums) {
+    const mid = Math.floor(nums.length / 2);
+    const int1 = majority(nums, 0, mid);
+    const int2 = majority(nums, mid + 1, nums.length - 1);
+    let count1 = 0;
+    let count2 = 0;
+    let ans = [];
+
+
+    for( let i = 0; i < nums.length; i++){  // n
+       if (nums[i] === int1){
+           count1 ++;
+       } elseif (nums[i] === int2){
+           count2 ++;
+       }
+    }
+
+    if(count1 > Math.floor(nums.length / 3)){
+        ans.push(int1);
+    } elseif (count 2 > Math.floor(nums.length / 3)){
+        ans.push(int2);
+    }
+
+    return ans;
+};
+
+268.
+
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, 
+find the one that is missing from the array.
+
+Input: [3,0,1]  size: 3      4 integer
+Output: 2
+
+Input: [0,9,4,2,3,5,6,7,1]
+Output: 8
+
+1. create var i
+2. while loop, i < input.length, iterate through input array
+3. check if input[i] === i or input[i] === n, move to next element else we swap input[i] with input[input[i]]
+4. iterate through array if input[i] !== i, return i, after iteration return n
+
+var missingNum = function(arr){
+    let i = 0;
+
+    while ( i < arr.length ){
+        if(arr[i] === i || arr[i] = arr.length) {
+            i++;
+        } else {
+            [arr[i], arr[arr[i]]] = [arr[arr[i]], arr[i]];
+        }
+    }
+
+    for(let j = 0; j < arr.length; j++ ){
+        if(arr[j] !== j) return j;
+    }
+
+    return arr.length;
+}
+
+[-0 -2 -1 ? -4]
+ +0 +1 +2 +3 +4
+
+
+
+ Given an array nums of n integers where n > 1,  
+return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+Input:  [1,2,3,4]
+Output: [24,12,8,6]
+
+[1]
+[]
+
+[1, 2]
+[ , 1]
+
+[1, 2, 3]
+[1, 1, 2]
+[6, 3, 1]
+
+L[i]:represents the product of all elements before the position i;
+R[j]
+
+1. calculate product of all the elements on the left
+    create a left product array,
+2. reverse the array and calculate product of all the elements on the left
+    create a right product array
+3. iterate through left and right product array and time each element together
+
+var func = function(nums){
+    const leftProd = [1];
+    const rightProd = new Array(nums.length);
+    rightProd[nums.length - 1] = 1;
+    const ans = [];
+
+    for(let i = 1; i < nums.length; i++){
+        leftProd.push(leftProd[i - 1] * nums[i]);
+        rightProd[nums.length - i - 1] = rightrightProd[nums.length - i] * nums[nums.length - i];
+    }
+
+    for(let j = 0; j < nums.length; j++){
+        ans.push(leftProd[j] * rightProd[j]);
+    }
+
+    return ans;
+}
+
+const function name(nums) {
+    let left = [1];
+    let right = 1;
+    let ans = [];
+
+    for (let i = 1; i < nums.length; i++) {
+        left[i] = left[i-1] * nums[i-1];
+    };
+
+    for (let i = nums.length - 1; i >= 0; i--) {
+        ans[i] = left[i] * right;
+        right *= nums[i];
+    };
+
+    return ans;
+};
+
+function func(node){
+    let length = 0;
+    let currentNode = node;
+    while(currentNode){
+        length += 1;
+        currentNode = node.next;
+    }
+
+    return length;
+}
+                  6 - 7 - 8
+                 /        |
+1 - 2 - 3 - 4 - 5 -  10 - 9 
+
+f = 5 //two steps faster
+s = 5
+
+when f and s meet, f start from root and move by 1 step
+
+2(x + y) = x + z
+2a + y = x + z - y
