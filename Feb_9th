@@ -1,0 +1,289 @@
+LRU CACHE
+least recently used cache 
+
+to store and remove key-value pairs with O(1)
+add(key, value)
+remove(key)
+get(key) return value
+
+O(1)
+
+capacity(n)
+
+3
+
+
+    head 
+
+
+{
+    key: {
+            val: value
+            prev:
+            next
+        }
+}
+
+class LRUCache{
+    constructer(n){
+        this.capacity = n;
+        this.size = 0;
+        this.map = new Map();
+        this.head = new Node(0);
+        this.tail = this.head;
+    }
+
+    add(key, value){
+        if(this.map.has(key)){
+            const cur = new Node(value);
+            this.map[key] = cur;
+            if(cur === tail){
+                return;
+            }
+
+            // rearrange
+            cur.prev.next = cur.next
+            cur.next.prev = cur.prev
+            tail.next = cur;
+            cur.prev = tail;
+            cur.next = null;
+            tail = cur;
+
+        }else{
+            if(this.size < this.capacity){
+                this.size++;
+            }
+            // remove lru Node
+            const lruNode = this.head.next;
+            this.map.delete(lruNode.key);
+            this.head.next = lruNode.next;
+            if(lruNode !== this.tail){
+                lruNode.next.prev = this.head;
+            }else{
+                tail = this.head;
+            }
+            // append new node to the end of list
+            const newNode = new Node(value);
+            this.map[key] = newNode;
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    remove(key){
+        if(this.map.has(key)){
+            this.size--;
+            const target = this.map.get(key);
+            target.prev.next = target.next;
+            if(target === tail){
+                tail = target.prev;
+            }else{
+                target.next.prev = target.prev;
+            }
+            return this.map.delete(key); // true false?
+        }
+        return false;
+    }
+
+    get(key){
+        if(this.map.has(key)){
+            const target = this.map.get(key);
+            if(target !== this.tail){
+                target.prev.next = target.next
+                target.next.prev = target.prev
+
+                tail.next = target;
+                target.prev = tail;
+                target.next = null;
+                tail = target;
+            }
+        }
+
+        return this.map.get(key).val;
+    }
+}
+
+
+
+3
+
+add(a, 1)
+add(b, 2)
+add(c, 3)
+get(a);
+add(d, 4)
+remove(d, 4)
+
+
+
+
+            c = 3;
+            size = 2;
+
+         
+            {
+                a: Na,
+                c: Nc,
+            }
+
+            head - Nc - Na  - null
+                        t
+
+            target Na 
+
+
+
+class Node{
+    constructer(key, value){
+        this.key = key;
+        this.value = value;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+        // get the node is using O(n) time
+        // we want get node with O(1)
+
+        map key -> node
+            {
+                b: Nb,
+                c: Nc,
+                d: Nd
+            }
+
+
+
+    {
+        b:2,     
+        c:3,     
+        d:4      
+    }
+    ordering
+    head  <->  b  <->  d  <->  c
+
+        get(c)  -> 3
+
+                cur 
+        tail 
+        orderingMap.get(c) Nc
+
+        cur.prev.next = cur.next
+        cur.next.prev = cur.prev
+
+        tail.next = cur;
+        cur.prev = tail;
+        cur.next = null;
+
+least frequently used cache
+
+
+
+        dummyHead
+        |
+        l1 - n
+        |
+        l2 -c - d 
+        |
+        l3 - d3- e3 - b3
+        |
+        l4 - f4
+
+
+
+
+node{
+    children: [[node, cost]...];
+}
+
+heap.offer(el)  //adding   O(k) where K is the size of the heap
+heap.poll()  // return min or max(remove the root),   O(k) where K is the size of the heap;
+heap.peek() // return min or max without deleting the root
+
+heap.offer([city, 0]);
+const visited = new Set();
+let minCost = 0;
+while(!minHeap.isEmpty()){
+    const cur = minHeap.poll();
+    if(!visited.has(cur[0])){
+        minCost+= cur[1];
+    }
+
+    visited.add(cur[0]);
+    cur.children.forEach(e => {
+        if(!visited.has(e)){
+            minHeap.offer(e)
+        }
+    })
+    
+    return minCost;
+}
+
+
+a  b1  c10
+b  c9  d3
+d  c3  e3
+
+
+visited:    [a, b, d, c, e] 1
+
+minHeap:    
+
+                          a         1
+                    10  /   \ 1
+                       /     \      3
+                      b0 ---  c   -----   f
+                       \  9   |  
+                      11\     |  1
+                         \    |
+                            e         4
+                       
+
+minCost = 12    
+
+
+a - b
+
+
+[b c, a, e]
+
+f12 f13 f14
+
+   
+e10   e11
+f12
+
+
+[2,4,3,6,5,4     ...]
+ 0 1 2 3 4 5
+           e
+
+        4
+     4      3     
+
+
+
+
+log(k)
+
+size = 5
+
+
+poll() remove root, take out last element from the array then put it on the first postion(root), then down swap
+offer() add it to the last postion of array and up swap
+
+
+
+
+leftchild idx*2 + 1
+rightchild idx*2 + 2
+
+odd
+(curidx - 1)/2
+even
+(curIdx - 2)/2
+
+word
+
+
+trie
