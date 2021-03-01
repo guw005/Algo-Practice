@@ -1,0 +1,86 @@
+function countMoves(numbers) {
+    // Write your code here
+    let count = 0;
+    while(!numbers.every(el=> el === numbers[0])){
+        let max = Math.max(...numbers);
+        let maxCount = 0;
+        for(let i = 0; i < numbers.length; i++){
+            if(numbers[i] < max){
+                numbers[i] += 1;
+            } else if (numbers[i] === max && maxCount === 0){
+                maxCount += 1;
+            } else if (numbers[i] === max && maxCount != 0){
+                numbers[i] += 1;
+            }
+        }
+        count += 1;
+    }
+    return count;
+}
+
+function countMoves(numbers) {
+    // Write your code here
+    let sum = numbers.reduce((a, b)=> a + b, 0);
+    let min = Math.min(...numbers);
+    return (sum - min*numbers.length);
+}
+
+/*[1,2,3,4] k=1 [1] [2] [3] [4] [1,2] [2,3] [3,4] [2,3,4]
+[6,3,5,8] k=1 [6] [8] [6,3] [5,8] [3] [5]
+ * Complete the 'evenSubarray' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY numbers
+ *  2. INTEGER k
+ */
+
+function evenSubarray(numbers, k) {
+    // Write your code here
+//     let result = [];
+//     let start = 0;
+//     let end = 0;
+//     let set = new Set;
+    
+//     while(start < numbers.length && end < numbers.length){
+//         while(end < numbers.length){
+//             let data = numbers.slice(start, end+1);
+//             if(data.length && oddNumberCount(data) <= k && !set.has(data.join(""))){
+//                 set.add(data.join(""));
+//                 result.push(data);
+//             }
+//             end++;
+//         }
+//         start += 1;
+//         end = start;
+//     }
+//     return result.length
+// }
+
+// function oddNumberCount(arr){
+//     let count = 0;
+//     for(let i = 0; i < arr.length; i++){
+//         if(arr[i] % 2 != 0){
+//             count++;
+//         }
+//     }
+//     return count;
+// }
+
+    let set = new Set;
+    for(let i = 0; i < numbers.length; i++){
+        let oddCount = 0;
+        for(let j = i; j < numbers.length; j++){
+            if(numbers[j] % 2 != 0){
+                oddCount ++;
+            }
+            
+            if(oddCount > k){
+                break;
+            }
+            let sub = numbers.slice(i, j+1);
+            set.add(sub.join(""));
+        }
+    }
+    return set.size;
+}
