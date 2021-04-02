@@ -1,0 +1,28 @@
+Function smallInt(str, k){
+		Let i = 0;
+		while( i < str.length){
+			if(k === 0){
+				break;
+}
+
+if(i === str.length - 1){
+	Str = str.slice(0, i);
+	K--;
+	I = i -2;
+} else{
+	Let curNum= str[i]; // 1, 4, 3, 2
+Let nextNum = str[i + 1]; // 4, 3, 2, 1
+
+if(curNum > nextNum){
+		Str = str.slice(0, i) + str.slice(i + 1); // “1 2 1 9”
+		K--;// 2, 1, 0
+		I = i - 2; //  -1, 0
+}
+}
+			
+			I++;	// 0, 1
+}
+
+Return Str;
+
+}
