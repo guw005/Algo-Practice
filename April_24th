@@ -1,0 +1,168 @@
+
+Helper function called ableToRemove that determine whether the string needs removal
+While function ableToRemove
+Helper function called remove that remove the duplicates
+
+ableToRemove - iterate through str, check if the next ele is equal to current ele; counter to keep track of the number of duplicates, and if counter is equal to k, then return true
+
+Remove - iterate through str, index of the first appearance of the ele, and last appearance, once counter is equal to k, slice the str, str.slice(0, first appearance) + str.slice(last appearance + 1, length - 1), reset i to last appearance + 1;
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {string}
+ */
+var removeDuplicates = function(s, k) {
+    	while(ableToRemove(s, k)){
+		 s = remove(s, k);
+}
+
+	return s;
+};
+
+Function ableToRemove(s, k){ //”aa”, 3
+	Let counter = 1;
+	for(let i = 0; i < s.length - 1; i++){
+		Let current = s[i];
+		Let next = s[i + 1];
+		if(current === next){
+			counter++;
+}else{
+	counter = 1;
+}
+If(counter === k) return true;
+}
+
+return false;
+}
+
+
+
+
+
+
+Function remove(s, k){//”d d b b b d a a”, 3
+			                           i
+	Let i = 1;//4
+	Let first = 0; // 4
+	Let char = s[0]; //”c”
+	Let counter = 1; // 0
+
+	while(s[i]){ 
+		Let current = s[i]; //”e”
+		if(char === current){
+			counter++;
+}else{
+char = s[i]; 
+counter = 1;
+first = i;
+}
+
+if(counter === k){
+	s = s.slice(0, first) + s.slice(i + 1, s.length); //”ddbb” + “bdaa”
+	i = i - k; 
+	counter = 0;
+	first = i + 1;
+}
+
+i++;
+}
+
+return s;
+}
+
+Stack [[character, count ]]
+
+B c c c b d d a a a d b e e, k = 3
+
+[[b, 2], [d, 2], [a, 1]]
+
+
+
+
+
+
+
+
+
+Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+ 
+Example 1:
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
+
+Example 2:
+Input: nums = [1]
+Output: 1
+
+Example 3:
+Input: nums = [5,4,-1,7,8]
+Output: 23
+
+ 
+Constraints:
+1 <= nums.length <= 3 * 104
+-105 <= nums[i] <= 105
+
+Iterate through array
+
+Conditional to check if number at current index + running total > number at current index
+If so, make new total = number at current index + total
+Otherwise, total is number at current index
+Keep track of running max (if sum > max, new max = sum, otherwise, max stays same)
+Return max
+
+
+
+
+Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
+It is guaranteed that the answer will fit in a 32-bit integer.
+A subarray is a contiguous subsequence of the array.
+ 
+Example 1:
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+
+Example 2:
+Input: nums = [-2,0,-1,-3]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+ 
+Constraints:
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+
+
+Var maxSubArray = function (array) { [-2, 0, -1, -3]
+	Let prod= array[0]; // -2, 0, 0, 3
+	Let max = array[0];// -2, 0, 0, 3
+	Let min = array[0];// -2, 0, -1, -3
+
+	for(let i = 1; i < array.length; i++){
+		if(array[i] < 0){
+			Let temp = max;
+			Max = min;
+			Min = temp;
+}
+		Max = Math.max(max * array[i], array[i]);
+		Min = Math.min(min * array[i], array[i]);
+		Prod = Math.max(max, prod);
+
+	Return prod;
+	
+}
+
+		If (array[i] * prod > array[i]){  //if 0 * -2 > 0
+			Prod = array[i] * prod;
+} else {
+	prod = array[i];
+}
+If (prod > max) {
+	Max = prod;
+}
+
+	}
